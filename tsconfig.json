@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ES6",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "strict": true,
+    "types": ["node", "jest"],
+    "outDir": "./build"
+  },
+  "include": ["src", "tests"],
+  "exclude": ["node_modules"]
+}
