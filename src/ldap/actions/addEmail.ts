@@ -9,7 +9,9 @@ export default async function (
     email: string,
     password: string = 'pwd$0000',
     quota: number = 1048576, // 1GB
-    sendAllowed: boolean = true
+    sendAllowed: boolean = true,
+    homeDirectory: string = '/var/mail/vol_1',
+    storageDirectory: string = '/var/mail/vol_1'
 ): Promise<boolean> {
     return await LDAPClientUtils.executionWrapper(client, async (): Promise<boolean> => {
         const {
@@ -28,7 +30,9 @@ export default async function (
             email,
             password,
             quota,
-            sendAllowed
+            sendAllowed,
+            homeDirectory,
+            storageDirectory
         );
 
         return true;
@@ -74,9 +78,11 @@ async function createEmailIfNotExists(
     dn: string,
     name: string,
     email: string,
-    password: string = 'password',
-    quota: number = 1024,
-    sendAllowed: boolean = true
+    password: string,
+    quota: number,
+    sendAllowed: boolean,
+    homeDirectory: string,
+    storageDirectory: string
 ): Promise<string> {
 
     const aliasCheckEntries = await LDAPClientUtils.searchLDAP(client, client.config.baseDN, {
@@ -120,12 +126,12 @@ async function createEmailIfNotExists(
 
             new Attribute({
                 type: 'mailHomeDirectory',
-                values: [`/var/mail/${domain}/${name}`]
+                values: [`${homeDirectory}/${domain}/${name}`]
             }),
 
             new Attribute({
                 type: 'mailStorageDirectory',
-                values: [`maildir:/var/mail/${domain}/${name}`]
+                values: [`maildir:${storageDirectory}/${domain}/${name}`]
             }),
 
             new Attribute({
