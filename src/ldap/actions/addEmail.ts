@@ -8,7 +8,7 @@ export default async function (
     client: ILDAPClient,
     email: string,
     password: string = 'pwd$0000',
-    quota: number = 1048576, // 1GB
+    quota: number = 1073741824, // 1GB
     sendAllowed: boolean = true,
     homeDirectory: string = '/var/mail/vol_1',
     storageDirectory: string = '/var/mail/vol_1'
