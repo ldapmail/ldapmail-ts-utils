@@ -13,12 +13,16 @@
     "url": "https://github.com/ldapmail/ldapmail-ts-utils/issues"
   },
   "homepage": "https://github.com/ldapmail/ldapmail-ts-utils.git#readme",
+  "main": "./build/index.cjs",
+  "module": "./build/index.js",
+  "types": "./build/index.d.ts",
   "dependencies": {
     "@types/imapflow": "^1.0.19",
     "@types/mailparser": "^3.4.5",
     "imapflow": "^1.0.166",
     "ldapts": "^7.2.1",
-    "mailparser": "^3.7.1"
+    "mailparser": "^3.7.1",
+    "tsup": "^8.3.5"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
@@ -28,7 +32,7 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "tsc",
+    "build": "tsup",
     "prepublishOnly": "npm run build && npm test"
   }
 }

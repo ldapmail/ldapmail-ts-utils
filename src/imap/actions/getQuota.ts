@@ -13,8 +13,11 @@ export default async function (
 
         return {
             path: quotaResponse?.path,
+            // @ts-expect-error
             usage: quotaResponse?.storage?.usage || 0,
+            // @ts-expect-error
             limit: quotaResponse?.storage?.limit || 0,
+            // @ts-expect-error
             status: quotaResponse?.storage?.status || '0%'
         } as IQuotaResult;
     });
