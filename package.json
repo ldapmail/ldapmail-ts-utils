@@ -33,6 +33,7 @@
   "scripts": {
     "test": "jest",
     "build": "tsup",
-    "prepublishOnly": "npm run build && npm test"
+    "prepublishOnly": "npm run build && npm test",
+    "prepare": "npm run build"
   }
 }
