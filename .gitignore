@@ -38,5 +38,6 @@ pnpm-debug.log*
 
 # Build
 /build
+/dist
 
 local_test.ts
