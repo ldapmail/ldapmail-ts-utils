@@ -72,7 +72,35 @@ const IMAPClient = IMAPClientUtils.createClient({
 const quota: IQuotaResult = await getQuota(IMAPClient);
 ```
 
+Sync mailboxes
+```typescript
+await syncMailbox(
+    IMAPClientUtils.createClient({
+        host: 'localhost',
+        port: 143,
+        user: 'xxx@xxx',
+        password: 'xxx',
+        secure: false,
+        process_batch_size: 30,
+        process_between_batch_size_delay: 100,
+    }), // target client
+    IMAPClientUtils.createClient({
+        host: 'source-host',
+        port: 143,
+        user: 'source-user-xxx@xxx',
+        password: 'xxx',
+        secure: false,
+        process_batch_size: 30,
+        process_between_batch_size_delay: 100,
+    }, // source client
+    10 //How much messages to fetch at once. The bigger the number, the faster the sync, but the more memory it consumes.
+    )
+);
+```
+
 ## TODO
+- Action to return DNS records for MX, DKIM, DMARC, SPF, etc ...
+- Action to send email
 - Email forwarding action
 - Set limit for sending emails per hour
 - Fix error levels for logs (docker-mailserver, openldap and ldap & imap utils)
