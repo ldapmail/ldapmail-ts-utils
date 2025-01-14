@@ -146,6 +146,10 @@ const transport = await getTransport(
 await transporter.sendMail({...});
 ```
 
+## Contributors
+- https://github.com/Codenetz
+- https://github.com/VasilKostadinov0104
+
 ## TODO
 
 - Action to return DNS records for MX, DKIM, DMARC, SPF, etc ...
