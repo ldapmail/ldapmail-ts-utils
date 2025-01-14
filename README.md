@@ -5,6 +5,7 @@ docker-mailserver. This package simplifies the integration process, providing ea
 for secure user authentication via LDAP and efficient email management through IMAP.
 
 Works with:
+
 - https://github.com/ldapmail/ldapmail
 
 ## Example
@@ -58,6 +59,7 @@ const result: IMailResult = await searchForMessages(IMAPClient, {
 ```
 
 Get quota for email account
+
 ```typescript
 const IMAPClient = IMAPClientUtils.createClient({
     host: 'localhost',
@@ -73,6 +75,7 @@ const quota: IQuotaResult = await getQuota(IMAPClient);
 ```
 
 Sync mailboxes
+
 ```typescript
 await syncMailbox(
     IMAPClientUtils.createClient({
@@ -85,22 +88,67 @@ await syncMailbox(
         process_between_batch_size_delay: 100,
     }), // target client
     IMAPClientUtils.createClient({
-        host: 'source-host',
-        port: 143,
-        user: 'source-user-xxx@xxx',
-        password: 'xxx',
-        secure: false,
-        process_batch_size: 30,
-        process_between_batch_size_delay: 100,
-    }, // source client
-    10 //How much messages to fetch at once. The bigger the number, the faster the sync, but the more memory it consumes.
+            host: 'source-host',
+            port: 143,
+            user: 'source-user-xxx@xxx',
+            password: 'xxx',
+            secure: false,
+            process_batch_size: 30,
+            process_between_batch_size_delay: 100,
+        }, // source client
+        10 //How much messages to fetch at once. The bigger the number, the faster the sync, but the more memory it consumes.
     )
 );
 ```
 
+Send email
+
+```typescript
+    await sendMessage(
+    IMAPClientUtils.createClient({
+        host: 'localhost',
+        port: 465,
+        user: 'xxx@xxx',
+        password: 'xxx',
+        secure: true,
+        process_batch_size: 30,
+        process_between_batch_size_delay: 100,
+    }),
+    [
+        'bar@localhost',
+        'baz@localhost'
+    ],
+    {
+        subject: 'Hello ✔',
+        text: 'Hello world?',
+        html: '<b>Hello world?</b>'
+    },
+    true // send individual emails to each recipient from the "to" array
+);
+```
+
+If you want ot use CC, BCC, attachments or other options from nodemailer you could use directly the
+transport.
+
+```typescript
+const transport = await getTransport(
+    IMAPClientUtils.createClient({
+        host: 'localhost',
+        port: 465,
+        user: 'xxx@xxx',
+        password: 'xxx',
+        secure: true,
+        process_batch_size: 30,
+        process_between_batch_size_delay: 100,
+    })
+);
+
+await transporter.sendMail({...});
+```
+
 ## TODO
+
 - Action to return DNS records for MX, DKIM, DMARC, SPF, etc ...
-- Action to send email
 - Email forwarding action
 - Set limit for sending emails per hour
 - Fix error levels for logs (docker-mailserver, openldap and ldap & imap utils)
