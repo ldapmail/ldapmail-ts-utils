@@ -58,6 +58,7 @@ const result: IMailResult = await searchForMessages(IMAPClient, {
 );
 ```
 
+### Quota
 Get quota for email account
 
 ```typescript
@@ -74,7 +75,9 @@ const IMAPClient = IMAPClientUtils.createClient({
 const quota: IQuotaResult = await getQuota(IMAPClient);
 ```
 
-Sync mailboxes
+### Sync mailboxes
+
+Create and pass target and source IMAP clients to sync mailboxes.
 
 ```typescript
 await syncMailbox(
@@ -101,7 +104,9 @@ await syncMailbox(
 );
 ```
 
-Send email
+### Send email
+
+It uses nodemailer
 
 ```typescript
     await sendMessage(
@@ -151,7 +156,6 @@ await transporter.sendMail({...});
 - https://github.com/VasilKostadinov0104
 
 ## TODO
-
 - Action to return DNS records for MX, DKIM, DMARC, SPF, etc ...
 - Email forwarding action
 - Set limit for sending emails per hour
