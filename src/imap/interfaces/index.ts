@@ -27,6 +27,11 @@ export type IMailResult = {
     messages: ParsedMail[]
 };
 
+export type IMailboxResult = {
+    name: string,
+    path: string
+};
+
 export type IQuotaResult = {
     path: string,
     usage: number,
@@ -39,6 +44,7 @@ export type IMAPFlag = "seen" | "answered" | "flagged" | "deleted" | "draft" | "
 export type ISearchCriteria = {
     messageId?: string;
     contains?: string;
+    mailbox?: string;
     flag?: {
         name: IMAPFlag;
         value: boolean;
