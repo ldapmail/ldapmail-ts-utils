@@ -9,6 +9,8 @@ export default async function (
         text: string, // plain text body
         html: string // html body
     },
+    cc: string[] = [], // "foo@localhost"; Cc: field
+    bcc: string[] = [], // "baz@localhost"; Bcc: field,
     individual: boolean = true // send individual emails to each recipient from the "to" array
 ): Promise<string[]> {
     const transporter = await getTransport(client);
@@ -19,6 +21,8 @@ export default async function (
             const info = await transporter.sendMail({
                 from: client.config.user,
                 to: recipient,
+                cc: cc.length > 0 ? cc.join(',') : undefined,
+                bcc: bcc.length > 0 ? bcc.join(',') : undefined,
                 subject: message.subject,
                 text: message.text,
                 html: message.html,
@@ -33,6 +37,8 @@ export default async function (
     const info = await transporter.sendMail({
         from: client.config.user,
         to: to.join(','),
+        cc: cc.length > 0 ? cc.join(',') : undefined,
+        bcc: bcc.length > 0 ? bcc.join(',') : undefined,
         subject: message.subject,
         text: message.text,
         html: message.html,
