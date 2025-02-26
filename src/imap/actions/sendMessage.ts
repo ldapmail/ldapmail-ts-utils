@@ -1,42 +1,53 @@
 import {IIMAPClient} from "../interfaces";
 import getTransport from "./getTransport";
+import composeMessage from "./composeMessage";
+import saveMessage from "./saveMessage";
 
 export default async function (
-    client: IIMAPClient,
+    smtpClient: IIMAPClient,
+    imapClient: IIMAPClient,
     to: string[], // "bar@localhost, baz@localhost"; To: field
     message: {
         subject: string, // "Hello ✔",
         text: string, // plain text body
         html: string // html body
     },
-    individual: boolean = true // send individual emails to each recipient from the "to" array
+    cc: string[] = [], // "foo@localhost"; Cc: field
+    bcc: string[] = [], // "baz@localhost"; Bcc: field,
+    individual: boolean = true, // send individual emails to each recipient from the "to" array
 ): Promise<string[]> {
-    const transporter = await getTransport(client);
+    const messageIds = await (async (): Promise<string[]> => {
+        const transporter = await getTransport(smtpClient);
 
-    const messageIds = [];
-    if (individual) {
-        for (const recipient of to) {
-            const info = await transporter.sendMail({
-                from: client.config.user,
-                to: recipient,
-                subject: message.subject,
-                text: message.text,
-                html: message.html,
-            });
+        const messageIds = [];
+        if (individual) {
+            for (const recipient of to) {
+                const composedMail = await composeMessage(imapClient, [recipient], message, cc, bcc, undefined);
+                const info = await transporter.sendMail(composedMail.mail);
 
-            messageIds.push(info.messageId);
+                if (info.messageId && info.response.toString().toLowerCase().includes('ok')) {
+                    messageIds.push(info.messageId);
+                }
+            }
+
+            return messageIds;
         }
 
-        return messageIds;
+        const composedMail = await composeMessage(imapClient, to, message, cc, bcc, undefined);
+        const info = await transporter.sendMail(composedMail.mail);
+
+        if (info.messageId && info.response.toString().toLowerCase().includes('ok'))
+            return [info.messageId];
+
+        return [];
+    })();
+
+    // Add the message to the Sent mailbox
+    for(const messageId of messageIds) {
+        const composedMail = await composeMessage(imapClient, to, message, cc, bcc, messageId);
+        const composedMailBuffer = await composedMail.compile().build();
+        await saveMessage(imapClient, 'Sent', composedMailBuffer, ['\\Seen']);
     }
 
-    const info = await transporter.sendMail({
-        from: client.config.user,
-        to: to.join(','),
-        subject: message.subject,
-        text: message.text,
-        html: message.html,
-    });
-
-    return [info.messageId];
+    return messageIds;
 }
