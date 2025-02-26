@@ -10,8 +10,8 @@ export default async function (
         const uidList = await searchForMessagesUID(client, searchFor); // Changes current mailbox
 
         for (const uid of uidList) {
-            await client.imap.messageFlagsAdd({uid: uid.toString()}, ['\\Deleted']);
-            await client.imap.messageDelete({uid: uid.toString()});
+            await client.imap.messageFlagsAdd({uid: uid.toString()}, ['\\Deleted'], {uid: true});
+            await client.imap.messageDelete({uid: uid.toString()}, {uid: true});
         }
 
         return true;
