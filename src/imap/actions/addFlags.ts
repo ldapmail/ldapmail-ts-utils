@@ -15,7 +15,7 @@ export default async function (
                 return `\\${flag.charAt(0).toUpperCase()}${flag.slice(1)}`
             });
 
-            await client.imap.messageFlagsAdd({uid: uid.toString()}, flagsToAdd);
+            await client.imap.messageFlagsAdd({uid: uid.toString()}, flagsToAdd, {uid: true});
         }
     });
 }

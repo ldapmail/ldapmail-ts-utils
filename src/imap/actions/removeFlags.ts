@@ -15,7 +15,7 @@ export default async function (
                 return `\\${flag.charAt(0).toUpperCase()}${flag.slice(1)}`
             });
 
-            await client.imap.messageFlagsRemove({uid: uid.toString()}, flagsToRemove);
+            await client.imap.messageFlagsRemove({uid: uid.toString()}, flagsToRemove, {uid: true});
         }
 
         return true;

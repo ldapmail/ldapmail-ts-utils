@@ -11,7 +11,7 @@ export default async function (
         const uidList = await searchForMessagesUID(client, searchFor); // Changes current mailbox
 
         for (const uid of uidList) {
-            await client.imap.messageMove({uid: uid.toString()}, targetMailBox);
+            await client.imap.messageMove({uid: uid.toString()}, targetMailBox, {uid: true});
         }
 
         return true;
