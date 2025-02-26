@@ -2,6 +2,7 @@ import {simpleParser} from "mailparser";
 import IMAPClientUtils from "../IMAPClientUtils";
 import {IIMAPClient, IMailResult, ISearchCriteria} from "../interfaces";
 import delay from "../../tools/delay";
+import searchForMessagesUID from "./searchForMessagesUID";
 
 export default async function (
     client: IIMAPClient,
@@ -11,7 +12,7 @@ export default async function (
     order: "asc" | "desc" = "desc"
 ): Promise<IMailResult> {
     return await IMAPClientUtils.executeIMAPCommand(client, async (): Promise<IMailResult> => {
-        if(searchFor.mailbox) await client.imap.mailboxOpen(searchFor.mailbox);
+        if (searchFor.mailbox) await client.imap.mailboxOpen(searchFor.mailbox);
 
         let query: any = {};
         if (searchFor.messageId) query = {
