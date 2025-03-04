@@ -38,6 +38,8 @@ pnpm-debug.log*
 
 # Build
 /build
+*/build
+**/bun.*b
 /dist
 
 local_test.ts

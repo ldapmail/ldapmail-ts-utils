@@ -16,7 +16,8 @@ import addGroup from './actions/groups/addGroup'
 import removeGroup from './actions/groups/removeGroup'
 const createLDAPClient = LDAPClientUtils.createClient
 export {
-    createLDAPClient, addEmail,
+    createLDAPClient,
+    addEmail,
     getEmail,
     getEmailsByDomain,
     modifyEnable,
