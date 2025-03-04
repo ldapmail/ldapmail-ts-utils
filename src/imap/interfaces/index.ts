@@ -21,10 +21,14 @@ export type IIMAPConfig = {
     process_between_batch_size_delay: number;
 }
 
+export interface ExtendedParsedMail extends ParsedMail {
+    flags: string[];
+}
+
 export type IMailResult = {
     page: number,
     pages: number,
-    messages: ParsedMail[]
+    messages: ExtendedParsedMail[]
 };
 
 export type IMailboxResult = {

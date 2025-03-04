@@ -50,6 +50,7 @@ export default async function (
             uid: uidRange.join(','),
         }, {
             uid: true,
+            flags: true,
             source: true
         }, {
             uid: true
@@ -78,6 +79,9 @@ async function processInBatches(client: IIMAPClient, searchFor: ISearchCriteria,
         const batchResults = await Promise.all(
             batch.map(async (message) => {
 
+                const flags = [];
+                message.flags.forEach((flag: any) => flags.push(flag.toString().toLowerCase().replace('\\', '')));
+
                 const parsedMessage = await simpleParser(message.source);
 
                 if (searchFor?.flag?.name && searchFor?.flag?.set === true) {
@@ -96,7 +100,10 @@ async function processInBatches(client: IIMAPClient, searchFor: ISearchCriteria,
                     );
                 }
 
-                return parsedMessage;
+                return {
+                    ...parsedMessage,
+                    flags,
+                };
             })
         );
         results.push(...batchResults);
