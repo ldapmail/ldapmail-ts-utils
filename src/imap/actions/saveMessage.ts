@@ -10,6 +10,6 @@ export default async function (
     return await IMAPClientUtils.executeIMAPCommand(client, async (): Promise<boolean> => {
         await client.imap.mailboxOpen(mailbox);
         const result = await client.imap.append(mailbox, message, flags);
-        return result?.destination === mailbox;
+        return (result as any)?.destination === mailbox;
     });
 }

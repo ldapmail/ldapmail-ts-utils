@@ -79,7 +79,7 @@ async function processInBatches(client: IIMAPClient, searchFor: ISearchCriteria,
         const batchResults = await Promise.all(
             batch.map(async (message) => {
 
-                const flags = [];
+                const flags: any[] = [];
                 message.flags.forEach((flag: any) => flags.push(flag.toString().toLowerCase().replace('\\', '')));
 
                 const parsedMessage = await simpleParser(message.source);

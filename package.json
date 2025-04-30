@@ -3,7 +3,7 @@
   "description": "A TypeScript utility library for managing LDAP authentication and IMAP email operations with docker-mailserver. This package simplifies the integration process, providing easy-to-use functions for secure user authentication via LDAP and efficient email management through IMAP.",
   "author": "Codenetz",
   "license": "MIT",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "repository": {
     "type": "git",
@@ -33,6 +33,7 @@
     "tsx": "^4.19.2"
   },
   "scripts": {
+    "build": "tsup",
     "test": "jest",
     "prepare": "npm run build"
   }
